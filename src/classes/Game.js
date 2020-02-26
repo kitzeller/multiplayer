@@ -19,6 +19,11 @@ export default class Game {
             this.scene
         );
 
+
+
+
+
+
         // renders the scene 60 fps.
         this.engine.runRenderLoop(() => {
             this.scene.render();
