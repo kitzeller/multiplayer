@@ -4,7 +4,7 @@ import * as $ from 'jquery';
 export default class Client {
     constructor() {
 
-        const socket = io.connect('http://localhost:8080');
+        const socket = io.connect(process.env.HOST);
 
         // console.log('init');
         // socket.on('connect', onConnect);
