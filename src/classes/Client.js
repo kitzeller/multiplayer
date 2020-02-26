@@ -1,18 +1,22 @@
 import io from 'socket.io-client';
 import * as $ from 'jquery';
+import Game from './Game';
 
 export default class Client {
-    constructor(game) {
-        var self = this;
+    constructor() {
         const socket = io.connect(process.env.HOST);
+
+        var game;
         var others = {};
+
         socket.on('connect', function() {
             console.log("Client Successfully Connected. Id: " + socket.id);
+        });
 
-            // game.setSocket(socket);
+        socket.on('scene', function (mesh) {
+            game = new Game('gameCanvas', mesh);
+            // Add self
             game.addPlayer(socket);
-
-            // socket.io
         });
 
         // Prompt user for name
@@ -32,7 +36,6 @@ export default class Client {
         });
 
         socket.on('other player movement', function (msg) {
-            // console.log(others);
             others[msg.id].mesh.position = msg.position;
         });
 
@@ -51,6 +54,7 @@ export default class Client {
             others = players;
             Object.keys(players).forEach(function (id) {
                 if (players[id].playerId === socket.id) {
+                    // TODO....
                     // addPlayer(self, players[id]);
                 } else {
                     players[id].mesh = game.addOtherPlayer(players[id].position);
