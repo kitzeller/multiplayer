@@ -17,6 +17,9 @@ app.get('/', function (req, res) {
 io.on('connection', function (socket) {
     console.log('a player connected');
 
+    // send the players object to the new player
+    socket.emit('currentPlayers', players);
+
     // broadcast to everyone except sender
     // socket.broadcast.emit('hi');
     // io.emit('chat message', "user " + socket.id + " connected ");
@@ -36,8 +39,7 @@ io.on('connection', function (socket) {
         io.emit('chat message', socket.nickname + ': ' + msg);
     });
 
-    // send the players object to the new player
-    // socket.emit('currentPlayers', players);
+
     // update all other players of the new player
     // socket.broadcast.emit('newPlayer', players[socket.id]);
 
