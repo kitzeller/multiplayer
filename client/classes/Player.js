@@ -6,6 +6,8 @@ export default class Player {
         this.scene = scene;
         this.socket = socket;
         this.player = BABYLON.MeshBuilder.CreateBox("box", {height: 5}, this.scene);
+        this.player.checkCollisions = true;
+        this.scene.activeCamera.lockedTarget = this.player;
 
         this.scene.registerBeforeRender( () => {
             if(this.scene.isReady()){
@@ -16,6 +18,12 @@ export default class Player {
 
     addDestination(pickResult){
         this.player.destination = pickResult.pickedPoint.clone();
+
+        var path = BABYLON.Mesh.CreateLines("lines", [
+            this.player.position,
+            this.player.destination
+        ], this.scene);
+        path.color = new BABYLON.Color3(0, 0, 1);
     }
 
     move(){

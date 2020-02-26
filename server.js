@@ -4,9 +4,15 @@ const server = require('http').Server(app);
 const io = require('socket.io').listen(server);
 const path = require('path');
 const BABYLON = require('babylonjs');
+const Game = require("./server/Game.js");
 
 const PORT = process.env.PORT || 8080;
 
+/**
+ * BABYLON Server-Side Engine
+ */
+
+const GAME = Game();
 const players = {};
 
 app.use(express.static(__dirname + '/public'));
@@ -24,7 +30,7 @@ io.on('connection', function (socket) {
     };
 
     socket.emit('scene', {
-        scene: BABYLON.SceneSerializer.Serialize(scene),
+        scene: BABYLON.SceneSerializer.Serialize(GAME.scene),
         // ground: BABYLON.SceneSerializer.SerializeMesh(ground),
         // sphere: BABYLON.SceneSerializer.SerializeMesh(mySphere)
     });
@@ -94,60 +100,3 @@ function generateName() {
     var name = capFirst(name1[getRandomInt(0, name1.length + 1)]) + ' ' + capFirst(name2[getRandomInt(0, name2.length + 1)]);
     return name;
 }
-
-/**
- * BABYLON Server-Side Engine
- */
-
-var engine = new BABYLON.NullEngine();
-var scene = new BABYLON.Scene(engine);
-
-function initScene() {
-    // Camera
-    let camera = new BABYLON.ArcRotateCamera("Camera", 3 * Math.PI / 2, Math.PI / 4, 30, new BABYLON.Vector3(0, 3, 0), scene);
-    camera.lowerBetaLimit = 0.1;
-    camera.upperBetaLimit = (Math.PI / 2) * 0.9;
-    camera.lowerRadiusLimit = 25;
-    camera.collisionRadius = new BABYLON.Vector3(0.5, 0.5, 0.5);
-    camera.checkCollisions = true;
-    camera.useBouncingBehavior = true;
-
-    // Ground
-    var ground = BABYLON.MeshBuilder.CreateGround("myGround", {
-        width: 4000,
-        height: 4000,
-        subdivisions: 50
-    }, scene);
-    ground.material = new BABYLON.StandardMaterial("ground", scene);
-    ground.material.diffuseColor = BABYLON.Color3.FromInts(56, 75, 45);
-    ground.material.specularColor = BABYLON.Color3.Black();
-    ground.receiveShadows = true;
-    ground.collisionsEnabled = true;
-    ground.checkCollisions = true;
-    ground.convertToFlatShadedMesh();
-
-    // Fog
-    scene.fogMode = BABYLON.Scene.FOGMODE_EXP2;
-    scene.fogDensity = 0.0005;
-    scene.fogColor = new BABYLON.Color3(0.6, 0.8, 0.75);
-
-    // Lights
-    var d = new BABYLON.DirectionalLight("dir", new BABYLON.Vector3(1, -1, -2), scene);
-    d.position = new BABYLON.Vector3(-300, 300, 600);
-
-    var h = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, -1), scene);
-    h.intensity = 1;
-
-    // TODO: Populate world...
-
-    for (let i = 0; i < 10; i++){
-        let mySphere = BABYLON.MeshBuilder.CreateSphere("mySphere", {diameter: getRandomInt(1, 10)}, scene);
-        mySphere.position.x = getRandomInt(-100, 100)
-        mySphere.position.z = getRandomInt(-100, 100)
-    }
-
-}
-
-initScene();
-
-
