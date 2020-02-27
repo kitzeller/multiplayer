@@ -8,6 +8,7 @@ a multiplayer algorave exhibition using node.js, socket.io, babylon.js and hydra
 - [ ] Improve UI
 - [ ] Add CodeMirror
 - [x] Send exhibits to server
+- [ ] Typescript server
 
 ## Hydra
 
@@ -19,14 +20,8 @@ https://github.com/ojack/hydra
 ## Babylon
 
 - [x] Scene Serializer
-- https://doc.babylonjs.com/api/classes/babylon.sceneserializer
-
 - [x] Null Engine
-- https://doc.babylonjs.com/features/nullengine 
-
-- [ ] Typescript server
-
-
+- [ ] Gizmo Manager
 
 
 #### Examples
@@ -36,3 +31,5 @@ https://github.com/ojack/hydra
 - https://www.babylonjs-playground.com/#1WROZH#67
 - https://www.babylonjs-playground.com/#1OH09K#123
 - https://cineshader.com/editor
+- https://doc.babylonjs.com/features/nullengine 
+- https://doc.babylonjs.com/api/classes/babylon.sceneserializer

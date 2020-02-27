@@ -22,8 +22,7 @@ export default class Game {
         BABYLON.SceneLoader.Load('', `data:${JSON.stringify(mesh.scene)}`, this.engine, scene => {
             this.scene = scene;
             this.scene.activeCamera.attachControl(canvas, true);
-
-
+            new BABYLON.Layer('background', 'assets/textures/background.jpg', this.scene, true);
         });
 
         document.getElementById('box').onclick = function () {
