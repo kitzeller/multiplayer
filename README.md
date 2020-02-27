@@ -1,6 +1,7 @@
 # multiplayer algorave
 a multiplayer algorave exhibition using node.js, socket.io, babylon.js and hydra
 
+![screenshot](img/screenshot.png)
 
 ## General
 
