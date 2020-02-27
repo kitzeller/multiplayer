@@ -2,6 +2,12 @@
 a multiplayer algorave exhibition using node.js, socket.io, babylon.js and hydra
 
 
+## General
+
+- [ ] Improve UI
+- [ ] Add CodeMirror
+- [ ] Send exhibits to server
+
 ## Hydra
 
 https://github.com/ojack/hydra
@@ -23,6 +29,9 @@ https://github.com/ojack/hydra
 
 
 #### Examples
-https://github.com/j-o-d-o/multiplayer-babylon-js-game
-https://github.com/creationspirit/multiplayer-browser-game-boilerplate/tree/master/client/src
-https://punkoffice.com/3d_multiplayer_games
+- https://github.com/j-o-d-o/multiplayer-babylon-js-game
+- https://github.com/creationspirit/multiplayer-browser-game-boilerplate/tree/master/client/src
+- https://punkoffice.com/3d_multiplayer_games
+- https://www.babylonjs-playground.com/#1WROZH#67
+- https://www.babylonjs-playground.com/#1OH09K#123
+- https://cineshader.com/editor

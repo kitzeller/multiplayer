@@ -11,6 +11,8 @@ export default class Client {
 
         socket.on('connect', function() {
             console.log("Client Successfully Connected. Id: " + socket.id);
+            $('#messages').append($('<li>').text('Weclome to multiplayer. An interactive algorave exhibition. Press Shift+Click to place your art. You can change the shape' +
+                'using the top buttons, and change the code in the text on the bottom right.'));
         });
 
         socket.on('scene', function (mesh) {
