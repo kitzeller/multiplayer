@@ -6,7 +6,7 @@ a multiplayer algorave exhibition using node.js, socket.io, babylon.js and hydra
 
 - [ ] Improve UI
 - [ ] Add CodeMirror
-- [ ] Send exhibits to server
+- [x] Send exhibits to server
 
 ## Hydra
 

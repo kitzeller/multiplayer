@@ -8,7 +8,7 @@ export default class Game {
         const canvas = document.getElementById(canvasId);
         var time = 0;
         var shaderCount = 0;
-        var shaderMaterials = [];
+        this.shaderMaterials = [];
         var mode = "plane";
 
         var hydraCanvas = document.createElement('canvas');
@@ -46,7 +46,8 @@ export default class Game {
                 let output = eval(toEval);
                 console.dir(output);
 
-                BABYLON.Effect.ShadersStore["custom" + shaderCount + "FragmentShader"] = output[0].frag;
+                BABYLON.Effect.ShadersStore["custom" + this.socket.id + shaderCount + "FragmentShader"] = output[0].frag;
+                console.log("custom" + this.socket.id + shaderCount + "FragmentShader")
                 BABYLON.Effect.ShadersStore["customVertexShader"] = "precision highp float;\r\n" +
 
                     "// Attributes\r\n" +
@@ -88,7 +89,7 @@ export default class Game {
                 console.log(filtered);
                 var myShaderMaterial = new BABYLON.ShaderMaterial("", this.scene, {
                         vertex: "custom",
-                        fragment: "custom" + shaderCount
+                        fragment: "custom" + this.socket.id + shaderCount
                     },
                     {
                         attributes: ["position", "normal", "uv"],
@@ -105,8 +106,7 @@ export default class Game {
                 }
 
                 myShaderMaterial.backFaceCulling = false;
-                shaderMaterials.push(myShaderMaterial);
-                shaderCount++;
+                this.shaderMaterials.push(myShaderMaterial);
 
                 var meshObj;
                 console.log(mode);
@@ -128,6 +128,22 @@ export default class Game {
                 meshObj.material = myShaderMaterial;
                 meshObj.showBoundingBox = true;
 
+                let m = BABYLON.SceneSerializer.SerializeMesh(meshObj);
+                this.socket.emit('new exhibit', {
+                    id : this.socket.id,
+                    mesh: m,
+                    vertex: {
+                        name: "customVertexShader",
+                        code: BABYLON.Effect.ShadersStore["customVertexShader"]
+                    },
+                    fragment : {
+                        name: "custom" +  this.socket.id + shaderCount + "FragmentShader",
+                        code: BABYLON.Effect.ShadersStore["custom" +  this.socket.id + shaderCount + "FragmentShader"]
+                    }
+                });
+
+                shaderCount++;
+
             } else {
                 if (pickResult.hit) {
                     this.player.addDestination(pickResult);
@@ -138,8 +154,8 @@ export default class Game {
         // renders the scene 60 fps.
         this.engine.runRenderLoop(() => {
             if (this.scene) {
-                if (shaderMaterials.length > 0) {
-                    shaderMaterials.forEach(function (sd) {
+                if (this.shaderMaterials.length > 0) {
+                    this.shaderMaterials.forEach(function (sd) {
                         sd.setFloat("time", time);
                     });
                     time += 0.02;
@@ -165,12 +181,14 @@ export default class Game {
     }
 
     addMesh(mesh) {
-        // BABYLON.SceneLoader.ImportMesh('', '', `data:${JSON.stringify(mesh.sphere)}`, this.scene)  //correct
-        // BABYLON.SceneLoader.ImportMesh('', '', `data:${JSON.stringify(mesh.ground)}`, this.scene, meshes => {
-        //     console.log(meshes);
-        // })  //correct
-        // BABYLON.SceneLoader.Load('',  `data:${JSON.stringify(mesh.scene)}`, this.engine, scene => {
-        //     this.scene = scene;
-        // })  //correct
+        BABYLON.SceneLoader.ImportMesh('', '', `data:${JSON.stringify(mesh)}`, this.scene, (meshes) => {
+            // Add materials to be rendered
+            this.shaderMaterials.push(meshes[0].material);
+        })
+    }
+
+    addShader(vertex, fragment){
+        BABYLON.Effect.ShadersStore[fragment.name] = fragment.code;
+        BABYLON.Effect.ShadersStore[vertex.name] = vertex.code;
     }
 }

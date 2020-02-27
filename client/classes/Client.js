@@ -21,6 +21,20 @@ export default class Client {
             game.addPlayer(socket);
         });
 
+        socket.on('allExhibits', function (ex) {
+            if (ex.length > 0){
+                for (let m of ex){
+                    game.addShader(m.vertex, m.fragment);
+                    game.addMesh(m.mesh);
+                }
+            }
+        });
+
+        socket.on('new exhibit', function (mesh) {
+            game.addShader(mesh.vertex, mesh.fragment);
+            game.addMesh(mesh.mesh);
+        });
+
         // Prompt user for name
         // var name = prompt("Please enter your name", "");
         // if (name != null || name !== "") {

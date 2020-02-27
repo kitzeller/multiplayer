@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 8080;
 
 const GAME = Game();
 const players = {};
+const exhibits = [];
 
 app.use(express.static(__dirname + '/public'));
 
@@ -37,6 +38,7 @@ io.on('connection', function (socket) {
 
     // send the players object to the new player
     socket.emit('currentPlayers', players);
+    socket.emit('allExhibits', exhibits);
 
     // broadcast to everyone except sender
     socket.broadcast.emit('newPlayer', players[socket.id]);
@@ -63,6 +65,12 @@ io.on('connection', function (socket) {
     //     var mySphere = BABYLON.MeshBuilder.CreateSphere("mySphere", {diameter: 2, diameterX: 3}, scene);
     //     socket.emit('recieve sphere', BABYLON.SceneSerializer.SerializeMesh(mySphere));
     // });
+
+    socket.on('new exhibit', function (msg) {
+        // TODO: save
+        exhibits.push(msg);
+        socket.broadcast.emit('new exhibit', msg);
+    });
 
     socket.on('player movement', function (msg) {
         // console.log(msg);
