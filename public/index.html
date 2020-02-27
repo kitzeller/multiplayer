@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>A multiplayer game</title>
+    <title>A multiplayer algorave game</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css"/>
     <script src="bundle.js"></script>
@@ -10,7 +10,17 @@
 
 <body>
 
+<div id="buttons">
+    <button class="ghost-button" id="box">box</button>
+    <button class="ghost-button" id="plane">plane</button>
+    <button class="ghost-button" id="sphere">sphere</button>
+</div>
+
 <canvas id="gameCanvas"></canvas>
+
+<div id="codeContainer">
+    <textarea id="code">hydra.osc(5).add(noise(5, 2)).color(0, 0, 3).colorama(0.4).glsl()</textarea>
+</div>
 
 <div id="messageCenter">
     <div id="messageContainer">
@@ -21,34 +31,5 @@
         <button>Send</button>
     </form>
 </div>
-
-<!--virtual path /socket.io/socket.io.js is automatically created when installing socket.io.-->
-<!--<script src="/socket.io/socket.io.js"></script>-->
-<!--<script src="https://code.jquery.com/jquery-1.11.1.js"></script>-->
-<!--<script>-->
-<!--    $(function () {-->
-<!--        var socket = io();-->
-
-<!--        // Prompt user for name-->
-<!--        var name = prompt("Please enter your name", "");-->
-<!--        if (name != null || name !== "") {-->
-<!--            socket.emit('send-nickname', name);-->
-<!--        }-->
-
-<!--        $('form').submit(function (e) {-->
-<!--            e.preventDefault(); // prevents page reloading-->
-<!--            socket.emit('chat message', $('#m').val());-->
-<!--            $('#m').val('');-->
-<!--            return false;-->
-<!--        });-->
-<!--        socket.on('chat message', function (msg) {-->
-<!--            $('#messages').append($('<li>').text(msg));-->
-<!--        });-->
-
-<!--        socket.on('currentPlayers', function (msg) {-->
-<!--            console.log(msg);-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
 </body>
 </html>

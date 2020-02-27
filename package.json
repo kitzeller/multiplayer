@@ -22,10 +22,13 @@
   },
   "homepage": "https://github.com/kitzeller/multiplayer#readme",
   "dependencies": {
+    "@babylonjs/core": "^4.0.3",
     "babylonjs": "^4.0.3",
+    "babylonjs-gui": "^4.0.3",
     "cannon": "^0.6.2",
     "dotenv-webpack": "^1.7.0",
     "express": "^4.17.1",
+    "hydra-synth": "^1.0.27",
     "jquery": "^3.4.1",
     "path": "^0.12.7",
     "socket.io": "^2.3.0",

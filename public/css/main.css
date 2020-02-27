@@ -64,3 +64,52 @@ form button {
 #messages li:nth-child(odd) {
     background: #eee;
 }
+
+#codeContainer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+#code {
+    height: 200px;
+    width: 300px;
+}
+
+#buttons{
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    position: absolute;
+}
+
+.ghost-button {
+    display: inline-block;
+    width: 100px;
+    font-weight: bold;
+    padding: 8px;
+    color: white;
+    border: 3px solid white;
+    text-align: center;
+    outline: none;
+    text-decoration: none;
+    background-color: transparent;
+    transition: background-color 0.2s ease-out,
+    color 0.2s ease-out;
+}
+
+.ghost-button:hover,
+.ghost-button:active {
+    background-color: white;
+    color: #000;
+    transition: background-color 0.3s ease-in,
+    color 0.3s ease-in;
+}
+
+.ghost-active {
+    background-color: white;
+    color: #000;
+    transition: background-color 0.3s ease-in,
+    color 0.3s ease-in;
+}
+

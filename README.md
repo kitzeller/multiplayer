@@ -1,8 +1,13 @@
-# multiplayer
-a multiplayer game
+# multiplayer algorave
+a multiplayer algorave exhibition using node.js, socket.io, babylon.js and hydra
 
 
+## Hydra
 
+https://github.com/ojack/hydra
+
+- [x] hydra-synth
+- [x] Fragment shader code
 
 ## Babylon
 
