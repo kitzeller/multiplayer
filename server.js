@@ -69,7 +69,8 @@ io.on('connection', function (socket) {
     socket.on('new exhibit', function (msg) {
         // TODO: save
         exhibits.push(msg);
-        socket.broadcast.emit('new exhibit', msg);
+        // socket.broadcast.emit('new exhibit', msg);
+        io.emit('new exhibit', msg);
     });
 
     socket.on('player movement', function (msg) {

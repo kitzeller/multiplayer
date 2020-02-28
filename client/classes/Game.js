@@ -2,6 +2,7 @@ import * as BABYLON from 'babylonjs';
 import Player from './Player';
 import Orb from './objects/Orb';
 import * as Hydra from 'hydra-synth';
+import * as CodeMirror from "codemirror";
 
 export default class Game {
     constructor(canvasId, mesh) {
@@ -11,6 +12,21 @@ export default class Game {
         var shaderCount = 0;
         this.shaderMaterials = [];
         var mode = "plane";
+
+        this.cm = CodeMirror.fromTextArea(document.getElementById("code"), {
+            theme: 'tomorrow-night-eighties',
+            mode: {name: 'javascript', globallets: true},
+            // lineWrapping: true,
+            styleSelectedText: true,
+            lineNumbers: true
+        });
+
+        //hydra.noise(100, 0.4)
+        //   .pixelate(40,40)
+        //   .mult(osc(1000, 0.001, 0.8).rotate(Math.PI * 0.5))
+        //   .mult(osc(100, () => (time / 0.005) % 0.005, 0.5).color(0.5, 4, 4))
+        //   .kaleid(2).glsl()
+
 
         var hydraCanvas = document.createElement('canvas');
         hydraCanvas.width = 100;
@@ -25,13 +41,9 @@ export default class Game {
             this.scene.activeCamera.attachControl(canvas, true);
             new BABYLON.Layer('background', 'assets/textures/background.jpg', this.scene, true);
 
-            // ORB
             this.orb = new Orb(this.scene, this.shaderMaterials);
-            // END ORB
-
 
             // Gizmos
-
             this.gizmoManager = new BABYLON.GizmoManager(this.scene);
             this.gizmoManager.positionGizmoEnabled = true;
             this.gizmoManager.rotationGizmoEnabled = true;
@@ -57,12 +69,12 @@ export default class Game {
             // HYDRA
             if (event.shiftKey) {
                 const hydra = new Hydra({canvas: hydraCanvas});
-                let toEval = document.getElementById("code").value;
+                let toEval = this.cm.getValue();
                 let output = eval(toEval);
                 console.dir(output);
 
                 BABYLON.Effect.ShadersStore["custom" + this.socket.id + shaderCount + "FragmentShader"] = output[0].frag;
-                console.log("custom" + this.socket.id + shaderCount + "FragmentShader")
+                console.log("custom" + this.socket.id + shaderCount + "FragmentShader");
                 BABYLON.Effect.ShadersStore["customVertexShader"] = "precision highp float;\r\n" +
 
                     "// Attributes\r\n" +
@@ -145,6 +157,10 @@ export default class Game {
                 this.gizmoManager.attachableMeshes.push(meshObj);
 
                 let m = BABYLON.SceneSerializer.SerializeMesh(meshObj);
+
+                // dispose due to bug causing some hydra not to be rendered until refresh
+                meshObj.dispose();
+
                 this.socket.emit('new exhibit', {
                     id : this.socket.id,
                     mesh: m,

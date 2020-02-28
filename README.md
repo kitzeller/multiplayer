@@ -6,8 +6,9 @@ a multiplayer algorave exhibition using node.js, socket.io, babylon.js and hydra
 ## General
 
 - [ ] Improve UI
-- [ ] Abstract Classes
-- [ ] Add CodeMirror
+- [x] Abstract Classes
+- [x] Add CodeMirror
+- [x] Add CodeMirror CSS
 - [x] Send exhibits to server
 - [ ] Typescript server
 - [ ] Marching.js support
@@ -19,9 +20,12 @@ https://github.com/ojack/hydra
 
 - [x] hydra-synth
 - [x] Fragment shader code
+- [ ] Save hydra code
 
 ## Babylon
 
+- [ ] Create initial world
+- [ ] Custom Loading Screen
 - [x] Scene Serializer
 - [x] Null Engine
 - [x] Gizmo Manager
