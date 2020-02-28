@@ -159,6 +159,7 @@ export default class Game {
                 let m = BABYLON.SceneSerializer.SerializeMesh(meshObj);
 
                 // dispose due to bug causing some hydra not to be rendered until refresh
+                // TODO: Update GizmoManager logic
                 meshObj.dispose();
 
                 this.socket.emit('new exhibit', {
@@ -189,6 +190,9 @@ export default class Game {
         // renders the scene 60 fps.
         this.engine.runRenderLoop(() => {
             if (this.scene) {
+                // fps
+                document.getElementById("fps").innerHTML = this.engine.getFps().toFixed() + " fps";
+
                 if (this.shaderMaterials.length > 0) {
                     this.shaderMaterials.forEach(function (sd) {
                         sd.setFloat("time", time);

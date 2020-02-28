@@ -5,7 +5,7 @@ a multiplayer algorave exhibition using node.js, socket.io, babylon.js and hydra
 
 ## General
 
-- [ ] Improve UI
+- [ ] Improve Chat UI
 - [x] Abstract Classes
 - [x] Add CodeMirror
 - [x] Add CodeMirror CSS
@@ -13,6 +13,9 @@ a multiplayer algorave exhibition using node.js, socket.io, babylon.js and hydra
 - [ ] Typescript server
 - [ ] Marching.js support
 - [ ] Gibber/Audio support
+- [ ] Add dev mode
+- [ ] Accounts
+- [ ] Persistent Storage
 
 ## Hydra
 
@@ -25,10 +28,11 @@ https://github.com/ojack/hydra
 ## Babylon
 
 - [ ] Create initial world
+- [x] Improve player mesh
 - [ ] Custom Loading Screen
 - [x] Scene Serializer
 - [x] Null Engine
-- [x] Gizmo Manager
+- [x] GizmoManager
 - [ ] Stop player movement if dragging behavior vs clicking
 
 

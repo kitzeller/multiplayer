@@ -113,3 +113,22 @@ form button {
     color 0.3s ease-in;
 }
 
+#fps {
+    font-family: monospace;
+    color: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+    z-index: 2;
+}
+
+#label {
+    font-family: monospace;
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    z-index: 2;
+}

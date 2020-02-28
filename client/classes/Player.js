@@ -1,13 +1,33 @@
 import * as BABYLON from 'babylonjs';
+// import 'babylonjs-loaders';
 
 export default class Player {
     constructor(scene, socket) {
         var self = this;
         this.scene = scene;
         this.socket = socket;
-        this.player = BABYLON.MeshBuilder.CreateBox("box", {height: 5}, this.scene);
-        this.player.checkCollisions = true;
-        this.scene.activeCamera.lockedTarget = this.player;
+
+        BABYLON.SceneLoader.ImportMesh("", "assets/meshes/", "dummy3.babylon", this.scene,  (newMeshes, particleSystems, skeletons) => {
+            this.skeleton = skeletons[0];
+            this.player = newMeshes[0];
+            this.player.scaling = new BABYLON.Vector3(5, 5, 5);
+            this.player.checkCollisions = true;
+            this.scene.activeCamera.lockedTarget = this.player;
+
+            // ROBOT
+            this.skeleton.animationPropertiesOverride = new BABYLON.AnimationPropertiesOverride();
+            this.skeleton.animationPropertiesOverride.enableBlending = true;
+            this.skeleton.animationPropertiesOverride.blendingSpeed = 0.05;
+            this.skeleton.animationPropertiesOverride.loopMode = 1;
+
+            this.idleRange = this.skeleton.getAnimationRange("YBot_Idle");
+            this.walkRange = this.skeleton.getAnimationRange("YBot_Walk");
+            this.runRange = this.skeleton.getAnimationRange("YBot_Run");
+
+            // IDLE
+            if (this.idleRange) this.scene.beginAnimation(this.skeleton, this.idleRange.from, this.idleRange.to, true);
+        });
+
 
         this.scene.registerBeforeRender( () => {
             if(this.scene.isReady()){
@@ -18,6 +38,19 @@ export default class Player {
 
     addDestination(pickResult){
         this.player.destination = pickResult.pickedPoint.clone();
+        this.scene.beginAnimation(this.skeleton, this.walkRange.from, this.walkRange.to, true);
+        this.player.lookAt(this.player.destination);
+
+        // Decal
+        var decalMaterial = new BABYLON.StandardMaterial("decalMat", this.scene);
+        decalMaterial.diffuseTexture = new BABYLON.Texture("assets/textures/impact.png", this.scene);
+        decalMaterial.diffuseTexture.hasAlpha = true;
+        decalMaterial.zOffset = -2;
+        var decalSize = new BABYLON.Vector3(10, 10, 10);
+        var newDecal = BABYLON.Mesh.CreateDecal("decal", pickResult.pickedMesh, pickResult.pickedPoint, pickResult.getNormal(true), decalSize);
+        newDecal.material = decalMaterial;
+
+        // this.player.addRotation(0, Math.PI, 0);
 
         // var path = BABYLON.Mesh.CreateLines("lines", [
         //     this.player.position,
@@ -46,6 +79,8 @@ export default class Player {
                     });
                 }
             } else {
+                // Arrived
+                if (this.idleRange) this.scene.beginAnimation(this.skeleton, this.idleRange.from, this.idleRange.to, true);
                 this.player.destination = null;
             }
         }

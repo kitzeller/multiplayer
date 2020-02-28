@@ -23,8 +23,10 @@
   "homepage": "https://github.com/kitzeller/multiplayer#readme",
   "dependencies": {
     "@babylonjs/core": "^4.0.3",
+    "@babylonjs/loaders": "^4.1.0",
     "babylonjs": "^4.0.3",
     "babylonjs-gui": "^4.0.3",
+    "babylonjs-loaders": "^4.1.0",
     "cannon": "^0.6.2",
     "codemirror": "^5.52.0",
     "dotenv-webpack": "^1.7.0",
