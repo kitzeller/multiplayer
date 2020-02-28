@@ -1,5 +1,6 @@
 import * as BABYLON from 'babylonjs';
 import Player from './Player';
+import Orb from './objects/Orb';
 import * as Hydra from 'hydra-synth';
 
 export default class Game {
@@ -23,6 +24,21 @@ export default class Game {
             this.scene = scene;
             this.scene.activeCamera.attachControl(canvas, true);
             new BABYLON.Layer('background', 'assets/textures/background.jpg', this.scene, true);
+
+            // ORB
+            this.orb = new Orb(this.scene, this.shaderMaterials);
+            // END ORB
+
+
+            // Gizmos
+
+            this.gizmoManager = new BABYLON.GizmoManager(this.scene);
+            this.gizmoManager.positionGizmoEnabled = true;
+            this.gizmoManager.rotationGizmoEnabled = true;
+            this.gizmoManager.scaleGizmoEnabled = true;
+            this.gizmoManager.boundingBoxGizmoEnabled = true;
+            this.gizmoManager.attachableMeshes = [this.orb];
+
         });
 
         document.getElementById('box').onclick = function () {
@@ -126,6 +142,7 @@ export default class Game {
                 meshObj.position.y += 5;
                 meshObj.material = myShaderMaterial;
                 meshObj.showBoundingBox = true;
+                this.gizmoManager.attachableMeshes.push(meshObj);
 
                 let m = BABYLON.SceneSerializer.SerializeMesh(meshObj);
                 this.socket.emit('new exhibit', {
@@ -145,7 +162,10 @@ export default class Game {
 
             } else {
                 if (pickResult.hit) {
-                    this.player.addDestination(pickResult);
+                    // Only allow the ground
+                    if (pickResult.pickedMesh.id === "myGround"){
+                        this.player.addDestination(pickResult);
+                    }
                 }
             }
         };
@@ -183,6 +203,9 @@ export default class Game {
         BABYLON.SceneLoader.ImportMesh('', '', `data:${JSON.stringify(mesh)}`, this.scene, (meshes) => {
             // Add materials to be rendered
             this.shaderMaterials.push(meshes[0].material);
+
+            // Only meshes you make should be editable?
+            // this.gizmoManager.attachableMeshes.push(meshes[0])
         })
     }
 

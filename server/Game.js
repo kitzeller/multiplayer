@@ -14,7 +14,7 @@ const Game = function () {
         this.scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
 
         // Camera
-        let camera = new BABYLON.ArcRotateCamera("Camera", 3 * Math.PI / 2, Math.PI / 4, 30, new BABYLON.Vector3(0, 3, 0), this.scene);
+        let camera = new BABYLON.ArcRotateCamera("Camera", 3 * Math.PI / 2, Math.PI / 2, 30, new BABYLON.Vector3(0, 3, 0), this.scene);
         camera.lowerBetaLimit = 0.1;
         camera.upperBetaLimit = (Math.PI / 2) * 0.9;
         camera.lowerRadiusLimit = 25;

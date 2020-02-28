@@ -19,11 +19,11 @@ export default class Player {
     addDestination(pickResult){
         this.player.destination = pickResult.pickedPoint.clone();
 
-        var path = BABYLON.Mesh.CreateLines("lines", [
-            this.player.position,
-            this.player.destination
-        ], this.scene);
-        path.color = new BABYLON.Color3(0, 0, 1);
+        // var path = BABYLON.Mesh.CreateLines("lines", [
+        //     this.player.position,
+        //     this.player.destination
+        // ], this.scene);
+        // path.color = new BABYLON.Color3(0, 0, 1);
     }
 
     move(){

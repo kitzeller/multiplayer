@@ -6,9 +6,12 @@ a multiplayer algorave exhibition using node.js, socket.io, babylon.js and hydra
 ## General
 
 - [ ] Improve UI
+- [ ] Abstract Classes
 - [ ] Add CodeMirror
 - [x] Send exhibits to server
 - [ ] Typescript server
+- [ ] Marching.js support
+- [ ] Gibber/Audio support
 
 ## Hydra
 
@@ -21,7 +24,8 @@ https://github.com/ojack/hydra
 
 - [x] Scene Serializer
 - [x] Null Engine
-- [ ] Gizmo Manager
+- [x] Gizmo Manager
+- [ ] Stop player movement if dragging behavior vs clicking
 
 
 #### Examples
