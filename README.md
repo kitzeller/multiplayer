@@ -29,11 +29,13 @@ https://github.com/ojack/hydra
 
 - [ ] Create initial world
 - [x] Improve player mesh
+- [ ] Add other player mesh rotation/animation
 - [ ] Custom Loading Screen
 - [x] Scene Serializer
 - [x] Null Engine
 - [x] GizmoManager
 - [ ] Stop player movement if dragging behavior vs clicking
+- [ ] First person camera
 
 
 #### Examples

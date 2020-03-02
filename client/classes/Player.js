@@ -40,6 +40,9 @@ export default class Player {
         this.player.destination = pickResult.pickedPoint.clone();
         this.scene.beginAnimation(this.skeleton, this.walkRange.from, this.walkRange.to, true);
         this.player.lookAt(this.player.destination);
+        this.player.rotation.x = 0;
+        this.player.rotation.z = 0;
+
 
         // Decal
         var decalMaterial = new BABYLON.StandardMaterial("decalMat", this.scene);

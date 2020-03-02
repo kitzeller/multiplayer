@@ -21,7 +21,7 @@ export default class Game {
             lineNumbers: true
         });
 
-        //hydra.noise(100, 0.4)
+        // hydra.noise(100, 0.4)
         //   .pixelate(40,40)
         //   .mult(osc(1000, 0.001, 0.8).rotate(Math.PI * 0.5))
         //   .mult(osc(100, () => (time / 0.005) % 0.005, 0.5).color(0.5, 4, 4))
@@ -149,6 +149,7 @@ export default class Game {
                         break;
                 }
                 meshObj.lookAt(this.scene.activeCamera.position);
+
                 // meshObj.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
                 meshObj.position = pickResult.pickedPoint;
                 meshObj.position.y += 5;
