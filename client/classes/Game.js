@@ -1,5 +1,6 @@
-import * as BABYLON from 'babylonjs';
 import Player from './Player';
+import * as BABYLON from 'babylonjs';
+import { AdvancedDynamicTexture, Rectangle, Control, TextBlock, GUI3DManager, Button3D} from "babylonjs-gui";
 import Orb from './objects/Orb';
 import * as Hydra from 'hydra-synth';
 import * as CodeMirror from "codemirror";
@@ -8,6 +9,9 @@ export default class Game {
     constructor(canvasId, mesh) {
         // get element from html file.
         const canvas = document.getElementById(canvasId);
+        this.engine = new BABYLON.Engine(canvas, true);
+        this.scene = new BABYLON.Scene(this.engine);
+
         var time = 0;
         var shaderCount = 0;
         this.shaderMaterials = [];
@@ -32,15 +36,10 @@ export default class Game {
         hydraCanvas.width = 100;
         hydraCanvas.height = 100;
 
-        // initiate the engine.
-        this.engine = new BABYLON.Engine(canvas, true);
-
         // loads the scene.
-        BABYLON.SceneLoader.Load('', `data:${JSON.stringify(mesh.scene)}`, this.engine, scene => {
-            this.scene = scene;
+        BABYLON.SceneLoader.Append('', `data:${JSON.stringify(mesh.scene)}`, this.scene, scene => {
             this.scene.activeCamera.attachControl(canvas, true);
             new BABYLON.Layer('background', 'assets/textures/background.jpg', this.scene, true);
-
             this.orb = new Orb(this.scene, this.shaderMaterials);
 
             // Gizmos
@@ -51,7 +50,14 @@ export default class Game {
             this.gizmoManager.boundingBoxGizmoEnabled = true;
             this.gizmoManager.attachableMeshes = [this.orb];
 
+
+            // UI
+            // this.advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI", true, this.scene);
+
+            this.manager = new GUI3DManager(this.scene);
+
         });
+
 
         document.getElementById('box').onclick = function () {
             mode = "box";
@@ -188,6 +194,15 @@ export default class Game {
             }
         };
 
+        this.scene.registerBeforeRender( () => {
+            if(this.scene.isReady()){
+                if (this.player){
+                    this.player.move();
+                }
+            }
+        });
+
+
         // renders the scene 60 fps.
         this.engine.runRenderLoop(() => {
             if (this.scene) {
@@ -201,22 +216,49 @@ export default class Game {
                     time += 0.02;
                 }
 
+                if (this.button && this.player) {
+                    if (this.player.player){
+                        this.button.position = this.player.player.position.clone();
+                        this.button.position.y = 10;
+                    }
+                }
+
                 this.scene.render();
+
+
             }
         });
     }
 
     addPlayer(socket) {
         this.socket = socket;
-        this.player = new Player(this.scene, this.socket);
+        this.player = new Player(this.scene, this.socket, true);
+        this.player.initCharModel();
+
+        // TODO: Remove Button background
+        this.button = new Button3D("reset");
+        console.log(this.button);
+        this.manager.addControl(this.button);
+        this.button.mesh.material.alpha = 0.8;
+
+        var text1 = new TextBlock();
+        text1.text = "USERNAME";
+        text1.color = "white";
+        text1.fontSize = 46;
+        this.button.content = text1;
     }
 
-    addOtherPlayer(pos) {
-        var myMaterial = new BABYLON.StandardMaterial("myMaterial", this.scene);
-        myMaterial.diffuseColor = BABYLON.Color3.Random();
-        let m = BABYLON.MeshBuilder.CreateBox("box", {height: 10}, this.scene);
-        m.material = myMaterial;
-        if (pos) m.position = pos;
+    async addOtherPlayer(pos) {
+        // var myMaterial = new BABYLON.StandardMaterial("myMaterial", this.scene);
+        // myMaterial.diffuseColor = BABYLON.Color3.Random();
+        // let m = BABYLON.MeshBuilder.CreateBox("box", {height: 10}, this.scene);
+        // m.material = myMaterial;
+        // if (pos) m.position = pos;
+        // return m;
+
+        let other = new Player(this.scene, this.socket);
+        let m = await other.initCharModel(pos);
+        console.log(m);
         return m;
     }
 

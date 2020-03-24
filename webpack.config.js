@@ -7,6 +7,7 @@ module.exports = {
         path: path.join(__dirname, "public"),
         filename: "bundle.js"
     },
+    devtool: 'source-map',
     mode: "development",
     plugins: [
         new Dotenv()

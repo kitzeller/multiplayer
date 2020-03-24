@@ -1,39 +1,41 @@
 import * as BABYLON from 'babylonjs';
-// import 'babylonjs-loaders';
 
 export default class Player {
-    constructor(scene, socket) {
+    constructor(scene, socket, main) {
         var self = this;
         this.scene = scene;
         this.socket = socket;
+        this.me = !!main;
 
-        BABYLON.SceneLoader.ImportMesh("", "assets/meshes/", "dummy3.babylon", this.scene,  (newMeshes, particleSystems, skeletons) => {
-            this.skeleton = skeletons[0];
-            this.player = newMeshes[0];
-            this.player.scaling = new BABYLON.Vector3(5, 5, 5);
-            this.player.checkCollisions = true;
-            this.scene.activeCamera.lockedTarget = this.player;
+        return this;
+    }
 
-            // ROBOT
-            this.skeleton.animationPropertiesOverride = new BABYLON.AnimationPropertiesOverride();
-            this.skeleton.animationPropertiesOverride.enableBlending = true;
-            this.skeleton.animationPropertiesOverride.blendingSpeed = 0.05;
-            this.skeleton.animationPropertiesOverride.loopMode = 1;
+    async initCharModel(position){
+        let importedModel = await BABYLON.SceneLoader.ImportMeshAsync("", "assets/meshes/", "dummy3.babylon", this.scene);
+        console.log(importedModel);
 
-            this.idleRange = this.skeleton.getAnimationRange("YBot_Idle");
-            this.walkRange = this.skeleton.getAnimationRange("YBot_Walk");
-            this.runRange = this.skeleton.getAnimationRange("YBot_Run");
+        this.skeleton = importedModel.skeletons[0];
+        this.player = importedModel.meshes[0];
+        this.player.scaling = new BABYLON.Vector3(5, 5, 5);
+        this.player.checkCollisions = false;
 
-            // IDLE
-            if (this.idleRange) this.scene.beginAnimation(this.skeleton, this.idleRange.from, this.idleRange.to, true);
-        });
+        if (this.me) this.scene.activeCamera.lockedTarget = this.player;
+        if (position) this.player.position = position;
 
+        // ROBOT
+        this.skeleton.animationPropertiesOverride = new BABYLON.AnimationPropertiesOverride();
+        this.skeleton.animationPropertiesOverride.enableBlending = true;
+        this.skeleton.animationPropertiesOverride.blendingSpeed = 0.05;
+        this.skeleton.animationPropertiesOverride.loopMode = 1;
 
-        this.scene.registerBeforeRender( () => {
-            if(this.scene.isReady()){
-                this.move();
-            }
-        });
+        this.idleRange = this.skeleton.getAnimationRange("YBot_Idle");
+        this.walkRange = this.skeleton.getAnimationRange("YBot_Walk");
+        this.runRange = this.skeleton.getAnimationRange("YBot_Run");
+
+        // IDLE
+        if (this.idleRange) this.scene.beginAnimation(this.skeleton, this.idleRange.from, this.idleRange.to, true);
+
+        return this.player;
     }
 
     addDestination(pickResult){

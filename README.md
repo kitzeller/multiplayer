@@ -5,6 +5,8 @@ a multiplayer algorave exhibition using node.js, socket.io, babylon.js and hydra
 
 ## General
 
+- [ ] Mobile Support
+- [ ] Name above head
 - [ ] Improve Chat UI
 - [x] Abstract Classes
 - [x] Add CodeMirror

@@ -56,24 +56,25 @@ export default class Client {
         });
 
         socket.on('disconnect', function (msg) {
+            console.log(others[msg])
             others[msg].mesh.dispose();
             delete others[msg];
         });
 
-        socket.on('newPlayer', function (msg) {
+        socket.on('newPlayer', async function (msg) {
             others[msg.playerId] = msg;
-            others[msg.playerId].mesh = game.addOtherPlayer();
+            others[msg.playerId].mesh = await game.addOtherPlayer();
         });
 
-        socket.on('currentPlayers', function (players) {
+        socket.on('currentPlayers',  function (players) {
             console.log(players);
             others = players;
-            Object.keys(players).forEach(function (id) {
+            Object.keys(players).forEach(async function (id) {
                 if (players[id].playerId === socket.id) {
                     // TODO....
                     // addPlayer(self, players[id]);
                 } else {
-                    players[id].mesh = game.addOtherPlayer(players[id].position);
+                    players[id].mesh = await game.addOtherPlayer(players[id].position);
                     // addOtherPlayers(self, players[id]);
                 }
             });
