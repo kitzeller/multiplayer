@@ -28,7 +28,7 @@
     "cannon": "^0.6.2",
     "codemirror": "^5.52.0",
     "dotenv-webpack": "^1.7.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "hydra-synth": "^1.0.27",
     "install": "^0.13.0",
     "jquery": "^3.4.1",
